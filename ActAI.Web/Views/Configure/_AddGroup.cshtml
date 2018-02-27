@@ -1,0 +1,60 @@
+﻿@model ActAI.Models.Group
+
+<form id="addGroupForm">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title">Add Group</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name", id = "txtAddGroup" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a onclick="$(this).closest('form').submit()" class="btn btn-primary">Save Changes</a>
+    </div>
+</form>
+
+<script>
+    $("#addGroupForm").submit(function (e) {
+        e.preventDefault();
+        var themeAnchor = $("#themesUl li.active").children().first();
+        console.log(themeAnchor);
+        postData = {
+            "Name": $("#txtAddGroup").val(),
+            "ThemeID": $("#themesUl li.active").children().first().attr("data-id")
+        }
+        console.log(themeAnchor.attr("href").substring(1));
+        $.ajax({
+            type: "POST",
+            url: "/Configure/AddGroup",
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (response) {
+                console.log(response);
+                if (response.id != 0) {
+                    var newLi = document.createElement("li");
+                    newLi.setAttribute("class", "groupLi");
+                    newLi.innerHTML = '<a id="groupAnchor' + response.id + '" data-id="'+ response.id + '" draggable="true" ondragstart="drag(event)" ondrop="dropInGroups(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#group' + response.id + '">' + $("#txtAddGroup").val() + '</a>';
+                    document.getElementById(themeAnchor.attr("href").substring(1)).firstElementChild.appendChild(newLi);
+                    console.log(newLi);
+                    if (document.getElementById("keywords")) {
+                        var newDiv = document.createElement("div");
+                        newDiv.setAttribute("class", "tab-content");
+                        newDiv.innerHTML = '<div id="group' + response.id + '" class="tab-pane"><ul class="nav nav-pills nav-stacked"></ul></div>';
+                        document.getElementById("keywords").appendChild(newDiv);
+                        console.log(newDiv)
+                    }
+                }
+                //$('#overlayForm').modal('hide');
+            },
+            error: function () {
+                //alert("Content load failed.");
+            }
+        });
+        $('#overlayForm').modal('hide');
+    });
+</script>

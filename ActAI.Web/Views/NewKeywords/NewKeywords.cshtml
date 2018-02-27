@@ -1,0 +1,120 @@
+﻿@model ActAI.Models.NewKeywordsVM
+
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/bootstrap-select.js"></script>
+
+<div class="row well dropdowns-row">
+    @using (Html.BeginForm("DropDownSelect", "NewKeywords", FormMethod.Post))
+    {
+        <div class="col-md-4">
+            <h4 class="inline">Organisation</h4>
+            @Html.DropDownList("Organisation", Model.Organisations.Select(x => new SelectListItem() { Text = x }), new { id = "organisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input id="txtOrganisation" style="border: 1px solid #ccc" />*@
+        </div>
+        <div class="col-md-4">
+            <h4 class="inline">Sub Org.</h4>
+            @Html.DropDownList("SubOrganisation", Model.SubOrganisations.Select(x => new SelectListItem() { Text = x }), new { id = "subOrganisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input style="border: 1px solid #ccc" />*@
+        </div>
+        <div class="col-md-4">
+            <h4 class="inline">Application</h4>
+            @Html.DropDownList("Application", Model.Applications.Select(x => new SelectListItem() { Text = x }), new { id = "applicationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input style="border: 1px solid #ccc" />*@
+        </div>
+    }
+</div>
+
+<div class="row panels-row">
+    <div id="newKeywords" class="col-md-3 well panel-left" style="overflow-x: hidden; overflow-y: auto" ondrop="dropInNewKeywords(event, this)" ondragover="allowDrop(event)">
+        <h2 class="margin-top-0">New Keywords</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtKeywords" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div >
+        <ul id="newKeywordsUl" class="nav nav-pills nav-stacked">
+            @for (int i = 0; i < Model.NewKeywords.Count(); i++)
+            {
+                <li id="@("newKeywordLi"+@Model.NewKeywords[i].Frequency)"><a id="@("newKeywordAnchor"+@Model.NewKeywords[i].Frequency)" draggable="true" ondragstart="drag(event)" ondrop="dropInNewKeywords(event, this)" ondragover="dragOverNewKeywords(event)" ondragleave="dragLeaveNewKeywords(event)" data-toggle="tab" href="#">@Model.NewKeywords[i].TrendKeyword</a></li>
+            }
+        </ul>
+    </div>
+    <div id="stopList" class="col-md-3 well panel-middle" style="overflow-x: hidden; overflow-y: auto" ondrop="dropInStopList(event, this)" ondragover="allowDrop(event)">
+        <h2 class="margin-top-0">Stop List</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtKeywords" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <ul id="stopListUl" class="nav nav-pills nav-stacked">
+            @for (int i = 0; i < Model.StopLists.Count(); i++)
+            {
+                <li id="@("stopListLi"+@Model.StopLists[i].StopKeywordID)"><a id="@("stopListAnchor"+@Model.StopLists[i].StopKeywordID)" draggable="true" ondragstart="drag(event)" ondrop="dropInStopList(event, this)" ondragover="dragOverStopList(event)" ondragleave="dragLeaveStopList(event)" data-toggle="tab" href="#">@Model.StopLists[i].StopKeywords</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-3 well panel-middle" style="overflow-x: hidden; overflow-y: auto">
+        <h2 class="margin-top-0">Groups</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtGroups" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <div id="groups" class="tab-content">
+            @for (int i = 0; i < Model.Themes.Count(); i++)
+            {
+                <div id="@("theme"+@Model.Themes[i].Id)" class="tab-pane">
+                    <ul class="nav nav-pills nav-stacked">
+                        @for (int j = 0; j < Model.Themes[i].Groups.Count(); j++)
+                        {
+                            <li class="groupLi"><a id="@("groupAnchor"+@Model.Themes[i].Groups[j].Id)" draggable="true" ondragstart="drag(event)" ondrop="dropInGroups(event, this)" ondragover="dragOverGroups(event)" ondragleave="dragLeave(event)" data-toggle="tab" href="#@("group"+@Model.Themes[i].Groups[j].Id)">@Model.Themes[i].Groups[j].Name</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <ul class="nav nav-pills nav-stacked" style="margin-top:auto">
+            <li><a id="addGroup" data-target="#overlayForm" data-toggle="modal" class="btn btn-default add-button"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
+        </ul>
+    </div>
+    <div id="themes" class="col-md-3 well panel-right" style="overflow-x: hidden; overflow-y: auto">
+        <h2 class="margin-top-0">Themes</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtThemes" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <ul id="themesUl" class="nav nav-pills nav-stacked">
+            @for (int i = 0; i < Model.Themes.Count(); i++)
+            {
+                <li class="themeLi"><a id="@("themeAnchor"+@Model.Themes[i].Id)" data-toggle="tab" href="#@("theme"+@Model.Themes[i].Id)" draggable="false" ondrop="dropInThemes(event, this)" ondragover="dragOverThemes(event)" ondragleave="dragLeave(event)">@Model.Themes[i].Name</a></li>
+            }
+        </ul>
+        <ul class="nav nav-pills nav-stacked" style="margin-top:auto">
+            <li><a id="addTheme" class="btn btn-default add-button" data-target="#overlayForm" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="overlayForm" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div id="modalContent" class="modal-content">
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/NewKeywords.js")

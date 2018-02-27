@@ -1,0 +1,69 @@
+﻿@model ActAI.Models.Theme
+
+<form id="addThemeForm">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title">Add Theme</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name", id = "txtAddTheme"})
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a onclick="$(this).closest('form').submit()" class="btn btn-primary">Save Changes</a>
+    </div>
+</form>
+
+<script>
+    //window.onload = function () {
+    //    alert("Hi")
+    //    document.getElementById("txtAddTheme").focus();
+    //};
+    //$('#overlayForm').on('shown.bs.modal', function () {
+    //    alert("Hello");
+    //    document.getElementById("txtAddTheme").focus();
+    //})
+    $("#addThemeForm").submit(function (e) {
+        e.preventDefault();
+        postData = {
+            "theme": { "Name": $("#txtAddTheme").val() },
+            "organisationID": $("#organisationDropDown").val(),
+            "subOrganisationID": $("#subOrganisationDropDown").val(),
+            "applicationID": $("#applicationDropDown").val()
+        }
+        console.log(postData);
+        $.ajax({
+            type: "POST",
+            url: "/Configure/AddTheme",
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (response) {
+                console.log(response);
+                if (response.id > 0) {
+                    var newLi = document.createElement("li");
+                    newLi.setAttribute("class", "themeLi");
+                    newLi.innerHTML = '<a id="themeAnchor' + response.id + '" data-id="' + response.id + '" data-toggle="tab" href="#theme' + response.id + '" ondrop="dropInThemes(event, this)" ondragover="allowDrop(event)">' + $("#txtAddTheme").val() + '</a>';
+                    document.getElementById("themesUl").appendChild(newLi);
+                    console.log(newLi);
+                    var newDiv = document.createElement("div");
+                    newDiv.setAttribute("id", "theme" + response.id);
+                    newDiv.setAttribute("class", "tab-pane");
+                    newDiv.innerHTML = '<ul class="groupsUl nav nav-pills nav-stacked"></ul>';
+                    document.getElementById("groups").appendChild(newDiv);
+                    console.log(newDiv)
+                }
+                else {
+
+                }
+                $('#overlayForm').modal('hide');
+            },
+            error: function () {
+                alert("Content load failed.");
+            }
+        });
+    });
+</script>
