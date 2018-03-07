@@ -22,6 +22,8 @@ namespace ActAI.Models
 
         public DateTime? CreatedDate { get; set; }
 
+        public int? Frequency { get; set; }
+
         public virtual Group Group { get; set; }
     }
 }

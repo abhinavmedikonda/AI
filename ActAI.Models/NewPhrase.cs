@@ -13,7 +13,9 @@ namespace ActAI.Models
         [StringLength(1000)]
         public string Name { get; set; }
 
-        public bool? StopList { get; set; }
+        public bool StopList { get; set; }
+
+        public int? Frequency { get; set; }
 
         public DateTime? CreatedDate { get; set; }
     }

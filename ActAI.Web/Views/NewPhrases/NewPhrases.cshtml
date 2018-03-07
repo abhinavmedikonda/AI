@@ -1,0 +1,79 @@
+﻿@model ActAI.Models.NewPhrasesVM
+
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/bootstrap-select.js"></script>
+
+<div class="row well dropdowns-row">
+    @using (Html.BeginForm("DropDownSelect", "NewPhrases", FormMethod.Post))
+    {
+        <div class="col-md-4">
+            <h4 class="inline">Organisation</h4>
+            @Html.DropDownList("Organisation", Model.Organisations.Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }), new { id = "organisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input id="txtOrganisation" style="border: 1px solid #ccc" />*@
+        </div>
+        <div class="col-md-4">
+            <h4 class="inline">Sub Org.</h4>
+            @Html.DropDownList("SubOrganisation", Model.SubOrganisations.Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }), new { id = "subOrganisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input style="border: 1px solid #ccc" />*@
+        </div>
+        <div class="col-md-4">
+            <h4 class="inline">Application</h4>
+            @Html.DropDownList("Application", Model.Applications.Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }), new { id = "applicationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @*<input style="border: 1px solid #ccc" />*@
+        </div>
+        <script type="text/javascript">$('.selectpicker').selectpicker();</script>
+    }
+</div>
+<div class="row panels-row">
+    <div id="stopList" class="col-md-3 well panel-left" style="overflow-x: hidden; overflow-y: auto" ondrop="dropInStopList(event, this)" ondragover="allowDrop(event)">
+        <h2 class="margin-top-0">Stop List</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtPhrases" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <ul id="stopListUl" class="nav nav-pills nav-stacked">
+            @foreach (var newPhrase in Model.NewPhrases.Where(x => x.StopList == true))
+            {
+                <li id="@("stopListLi"+@newPhrase.ID)"><a id="@("stopListAnchor"+@newPhrase.ID)" data-id="@newPhrase.ID" draggable="true" ondragstart="drag(event)" ondrop="dropInStopList(event, this)" ondragover="dragOverStopList(event)" ondragleave="dragLeaveStopList(event)" data-toggle="tab" href="#">@newPhrase.Name</a></li>
+            }
+        </ul>
+    </div>
+    <div id="newPhrases" class="col-md-3 well panel-middle" style="overflow-x: hidden; overflow-y: auto" ondrop="dropInNewPhrases(event, this)" ondragover="allowDrop(event)">
+        <h2 class="margin-top-0">New Phrases</h2>
+        <div class="input-group stylish-input-group">
+            <input id="txtPhrases" type="text" class="form-control" placeholder="Search">
+            <span class="input-group-addon">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <ul id="newPhrasesUl" class="nav nav-pills nav-stacked">
+            @foreach (var newPhrase in Model.NewPhrases.Where(x => x.StopList == false))
+            {
+                <li id="@("newPhraseLi"+@newPhrase.ID)"><a id="@("newPhraseAnchor"+@newPhrase.ID)" data-id="@newPhrase.ID" draggable="true" ondragstart="drag(event)" ondrop="dropInNewPhrases(event, this)" ondragover="dragOverNewPhrases(event)" ondragleave="dragLeaveNewPhrases(event)" data-toggle="tab" href="#">@newPhrase.Name</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-3 well panel-middle" style="overflow-x: hidden; overflow-y: auto">
+        @Html.Partial("_Groups", Model.Themes)
+    </div>
+    <div id="themes" class="col-md-3 well panel-right" style="overflow-x: hidden; overflow-y: auto">
+        @Html.Partial("_Themes", Model.Themes)
+    </div>
+</div>
+
+<div class="modal fade" id="overlayForm" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div id="modalContent" class="modal-content">
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/NewPhrases.js")

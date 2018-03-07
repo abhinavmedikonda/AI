@@ -156,3 +156,4 @@ C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Web.Tests\obj\Debug\ActAI.Web.Tes
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Web.Tests\obj\Debug\ActAI.Web.Tests.csproj.CoreCompileInputs.cache
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Web.Tests\obj\Debug\ActAI.Web.Tests.dll
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Web.Tests\obj\Debug\ActAI.Web.Tests.pdb
+C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Web.Tests\obj\Debug\ActAI.Web.Tests.csproj.CopyComplete

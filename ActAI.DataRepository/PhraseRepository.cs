@@ -65,9 +65,9 @@ namespace ActAI.DataRepository
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["MyDbConn1"].ConnectionString))
             {
                 db.Query<bool>
-                ("UPDATE Phrase SET Name = @Name " +
+                ("UPDATE Phrase SET Name = @Name, GroupID = @GroupID " +
                 "WHERE Id = @Id",
-                new { Id = phrase.ID, Name = phrase.Name });
+                new { Id = phrase.ID, Name = phrase.Name, GroupID = phrase.GroupID });
             }
         }
 

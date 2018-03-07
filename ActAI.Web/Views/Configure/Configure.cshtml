@@ -10,7 +10,7 @@
     {
         <div class="col-md-4">
             <h4 class="inline">Organisation</h4>
-            @Html.DropDownList("Organisation", Model.Organisations.Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }), new { id="organisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
+            @Html.DropDownList("Organisation", Model.Organisations.Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }), new { id = "organisationDropDown", @class = "selectpicker", onchange = "this.form.submit()" })
             @*<input id="txtOrganisation" style="border: 1px solid #ccc" />*@
         </div>
         <div class="col-md-4">
@@ -29,85 +29,13 @@
 
 <div class="row panels-row">
     <div id="themes" class="col-md-3 well panel-left" style="overflow-x: hidden; overflow-y: auto">
-        <h2 class="margin-top-0">Themes</h2>
-        <div class="input-group stylish-input-group">
-            <input id="txtThemes" type="text" class="form-control" placeholder="Search">
-            <span class="input-group-addon">
-                <button type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
-        <ul id="themesUl" class="nav nav-pills nav-stacked">
-            @for (int i = 0; i < Model.Themes.Count(); i++)
-            {
-                <li class="themeLi"><a id="@("themeAnchor"+@Model.Themes[i].ID)" data-id="@Model.Themes[i].ID" data-toggle="tab" href="#@("theme"+@Model.Themes[i].ID)" draggable="false" ondrop="dropInThemes(event, this)" ondragover="dragOverThemes(event)" ondragleave="dragLeave(event)">@Model.Themes[i].Name</a></li>
-            }
-        </ul>
-        <ul class="nav nav-pills nav-stacked" style="margin-top:auto">
-            <li><a id="addTheme" class="btn btn-default add-button" data-target="#overlayForm" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
-        </ul>
+        @Html.Partial("_Themes", Model.Themes)
     </div>
     <div class="col-md-3 well panel-middle" style="overflow-x: hidden; overflow-y: auto">
-        <h2 class="margin-top-0">Groups</h2>
-        <div class="input-group stylish-input-group">
-            <input id="txtGroups" type="text" class="form-control" placeholder="Search">
-            <span class="input-group-addon">
-                <button type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
-        </div>
-        <div id="groups" class="tab-content">
-            @for (int i = 0; i < Model.Themes.Count(); i++)
-            {
-                <div id="@("theme"+@Model.Themes[i].ID)" class="tab-pane">
-                    <ul class="groupsUl nav nav-pills nav-stacked">
-                        @for (int j = 0; j < Model.Themes[i].Groups?.Count(); j++)
-                        {
-                            <li class="groupLi"><a id="@("groupAnchor"+@Model.Themes[i].Groups[j].ID)" data-id="@Model.Themes[i].Groups[j].ID" draggable="true" ondragstart="drag(event)" ondrop="dropInGroups(event, this)" ondragover="dragOverGroups(event)" ondragleave="dragLeave(event)" data-toggle="tab" href="#@("group"+@Model.Themes[i].Groups[j].ID)">@Model.Themes[i].Groups[j].Name</a></li>
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
-        <ul class="nav nav-pills nav-stacked" style="margin-top:auto">
-            <li><a id="addGroup" data-target="#overlayForm" data-toggle="modal" class="btn btn-default add-button"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
-        </ul>
+        @Html.Partial("_Groups", Model.Themes)
     </div>
     <div class="col-md-6 well panel-right" style="overflow-x: hidden; overflow-y: auto">
-        <h2 class="margin-top-0">Phrases</h2>
-        <div class="col-md-6" style="overflow-y:auto; padding-left:0px; display:flex; flex-direction: column; justify-content:flex-start; flex-grow: 1">
-            <div class="input-group stylish-input-group">
-                <input id="txtKeywords" type="text" class="form-control" placeholder="Search">
-                <span class="input-group-addon">
-                    <button type="submit">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
-            </div>
-            <div id="keywords">
-                @for (int i = 0; i < Model.Themes.Count(); i++)
-                {
-                    <div class="tab-content">
-                        @for (int j = 0; j < Model.Themes[i].Groups?.Count(); j++)
-                        {
-                            <div id="@("group"+@Model.Themes[i].Groups[j].ID)" class="tab-pane">
-                                <ul class="nav nav-pills nav-stacked">
-                                    @for (int k = 0; k < Model.Themes[i].Groups[j].Phrases?.Count(); k++)
-                                    {
-                                        <li class="keywordLi"><a id="@("keywordAnchor"+@Model.Themes[i].Groups[j].Phrases[k].ID)" data-id="@Model.Themes[i].Groups[j].Phrases[k].ID" draggable="true" ondragstart="drag(event)" href="#">@Model.Themes[i].Groups[j].Phrases[k].Name</a></li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
-            <ul class="nav nav-pills nav-stacked" style="margin-top:auto">
-                <li><a id="addKeyword" data-target="#overlayForm" data-toggle="modal" class="btn btn-default add-button"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
-            </ul>
-        </div>
+        @Html.Partial("_Phrases", Model.Themes)
     </div>
 </div>
 

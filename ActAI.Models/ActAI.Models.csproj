@@ -49,7 +49,7 @@
     <Compile Include="Group.cs" />
     <Compile Include="Keyword.cs" />
     <Compile Include="Mapping.cs" />
-    <Compile Include="NewKeywordsVM.cs" />
+    <Compile Include="NewPhrasesVM.cs" />
     <Compile Include="NewPhrase.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Phrase.cs" />

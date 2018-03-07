@@ -1,0 +1,59 @@
+﻿@model List<ActAI.Models.Theme>
+
+<h2 class="margin-top-0">Themes</h2>
+<div class="input-group stylish-input-group">
+    <input id="txtThemes" type="text" class="form-control" placeholder="Search">
+    <span class="input-group-addon">
+        <button type="submit">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </span>
+</div>
+<ul id="themesUl" class="nav nav-pills nav-stacked">
+    @for (int i = 0; i < Model.Count(); i++)
+            {
+        <li class="themeLi"><a id="@("themeAnchor"+@Model[i].ID)" data-id="@Model[i].ID" data-toggle="tab" href="#@("theme"+@Model[i].ID)" draggable="false" ondrop="dropInThemes(event, this)" ondragover="dragOverThemes(event)" ondragleave="dragLeave(event)">@Model[i].Name</a></li>
+    }
+</ul>
+<ul class="nav nav-pills nav-stacked" style="margin-top:auto">
+    <li><a id="addTheme" class="btn btn-default add-button" data-target="#overlayForm" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
+</ul>
+
+<script type="text/javascript">
+    function dragOverThemes(ev) {
+        if (this.draggedId.startsWith("groupAnchor")) {
+            document.getElementById(ev.target.id).parentElement.classList.add("drop-ok");
+            ev.preventDefault();
+        }
+    }
+    function dropInThemes(ev, target) {
+        console.log("dropInThemes");
+        var dropId = ev.target.id;
+        var dragId = ev.dataTransfer.getData("text");
+        if (dragId.startsWith("groupAnchor")) {
+            ev.preventDefault();
+            console.log(dropId);
+            var queryString = "?groupID=" + $("#" + dragId).attr("data-id") + "&themeID=" + $("#" + dropId).attr("data-id");
+            $.ajax({
+                type: "POST",
+                url: "/Configure/MoveGroup" + queryString,
+                //data: JSON.stringify(dataString),
+                //contentType: "application/json; charset=utf-8",
+                datatype: "html",
+                success: function (data) {
+                    var dropTrendId = dropId.substring(11);
+                    var dragTrendId = dragId.substring(11);
+                    var dropThemeId = document.getElementById("theme" + dropTrendId);
+                    var dragLi = document.getElementById(dragId).parentElement.cloneNode(true);
+                    document.getElementById(dragId).parentElement.remove();
+                    dropThemeId.firstElementChild.appendChild(dragLi);
+                    document.getElementById("group" + dragTrendId).classList.remove("active");
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+        }
+        document.getElementById(ev.target.id).parentElement.classList.remove("drop-ok");
+    }
+</script>

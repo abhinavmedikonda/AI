@@ -30,7 +30,6 @@ namespace ActAI.Controllers
         public ActionResult Configure()
         {
             ConfigureVM configureVM = new ConfigureVM();
-            TrendAnalysisThemeRepository trendRepository = new TrendAnalysisThemeRepository();
             OrganisationRepository organisationRepository = new OrganisationRepository();
             SubOrganisationRepository subOrganisationRepository = new SubOrganisationRepository();
             ApplicationRepository applicationRepository = new ApplicationRepository();
@@ -60,7 +59,7 @@ namespace ActAI.Controllers
         //    }
         //}
 
-        public ActionResult DropDownSelect(string organisation, string subOrganisation, string application)
+        public ActionResult DropDownSelect(int organisation, int subOrganisation, int application)
         {
             ConfigureVM configureVM = new ConfigureVM();
             TrendAnalysisThemeRepository trendRepository = new TrendAnalysisThemeRepository();
@@ -76,8 +75,7 @@ namespace ActAI.Controllers
             configureVM.Applications = new List<Application>() { new Application() { Name = "" } };
             configureVM.Applications.AddRange(applicationRepository.Get());
 
-            configureVM.Themes = themeRepository.DropDownSelect(Convert.ToInt32(organisation),
-                Convert.ToInt32(subOrganisation), Convert.ToInt32(application));
+            configureVM.Themes = themeRepository.DropDownSelect(organisation, subOrganisation, application);
 
             return View("Configure", configureVM);
         }
@@ -101,16 +99,16 @@ namespace ActAI.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddTheme(Theme theme, string organisationID, string subOrganisationID, string applicationID)
+        public JsonResult AddTheme(Theme theme, int organisationID, int subOrganisationID, int applicationID)
         {
             ThemeRepository themeRepository = new ThemeRepository();
             int id = themeRepository.Insert(theme);
 
             Mapping mapping = new Mapping()
             {
-                OrganisationID = organisationID == "0" ? null : (int?)Convert.ToInt32(organisationID),
-                SubOrganisationID = subOrganisationID == "0" ? null : (int?)Convert.ToInt32(subOrganisationID),
-                ApplicationID = applicationID == "0" ? null : (int?)Convert.ToInt32(applicationID),
+                OrganisationID = organisationID == 0 ? null : (int?)Convert.ToInt32(organisationID),
+                SubOrganisationID = subOrganisationID == 0 ? null : (int?)Convert.ToInt32(subOrganisationID),
+                ApplicationID = applicationID == 0 ? null : (int?)Convert.ToInt32(applicationID),
                 ThemeID = id
             };
             MappingRepository mappingRepository = new MappingRepository();

@@ -7,7 +7,7 @@ $("#txtThemes").autocomplete({
 });
 $("#txtThemes").focus(function (event) {
     $("#txtThemes").autocomplete("search", "");
-})
+});
 $("#addTheme").click(function () {
     $.ajax({
         type: "get",
@@ -25,9 +25,9 @@ $("#addTheme").click(function () {
     });
 });
 $("#addGroup").click(function () {
-    console.log(1)
-    if (typeof $("#themesUl li.active").children().first().attr("id") != "undefined") {
-        console.log(2)
+    console.log(1);
+    if (typeof $("#themesUl li.active").children().first().attr("id") !== "undefined") {
+        console.log(2);
         $.ajax({
             type: "get",
             url: "/Configure/_AddGroup",
@@ -53,27 +53,15 @@ function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     this.draggedId = ev.target.id;
 }
-function dragOverThemes(ev) {
-    if (this.draggedId.startsWith("groupAnchor")) {
-        document.getElementById(ev.target.id).parentElement.classList.add("drop-ok");
-        ev.preventDefault();
-    }
-}
-function dragOverGroups(ev) {
-    if (this.draggedId.startsWith("newKeywordAnchor") || this.draggedId.startsWith("stopListAnchor")) {
-        document.getElementById(ev.target.id).parentElement.classList.add("drop-ok");
-        ev.preventDefault();
-    }
-}
 function dragOverStopList(ev) {
-    if (this.draggedId.startsWith("newKeywordAnchor")) {
+    if (this.draggedId.startsWith("newPhraseAnchor")) {
         document.getElementById("stopListUl").classList.add("drop-ok");
         ev.preventDefault();
     }
 }
-function dragOverNewKeywords(ev) {
+function dragOverNewPhrases(ev) {
     if (this.draggedId.startsWith("stopListAnchor")) {
-        document.getElementById("newKeywordsUl").classList.add("drop-ok");
+        document.getElementById("newPhrasesUl").classList.add("drop-ok");
         ev.preventDefault();
     }
 }
@@ -83,56 +71,34 @@ function dragLeave(ev) {
 function dragLeaveStopList(ev) {
     document.getElementById("stopListUl").classList.remove("drop-ok");
 }
-function dragLeaveNewKeywords(ev) {
-    document.getElementById("newKeywordsUl").classList.remove("drop-ok");
+function dragLeaveNewPhrases(ev) {
+    document.getElementById("newPhrasesUl").classList.remove("drop-ok");
 }
 function allowDrop(ev) {
     var data = ev.dataTransfer.getData("text");
-    console.log(ev.draggedId)
+    console.log(ev.draggedId);
     ev.preventDefault();
 }
-function dropInThemes(ev, target) {
-    var dropId = ev.target.id;
-    var dragId = ev.dataTransfer.getData("text");
-    if (dragId.startsWith("groupAnchor")) {
+function dragOverGroups(ev) {
+    if (this.draggedId.startsWith("newPhraseAnchor") || this.draggedId.startsWith("stopListAnchor")) {
+        document.getElementById(ev.target.id).parentElement.classList.add("drop-ok");
         ev.preventDefault();
-        var queryString = "?group=" + $("#" + dragId).text() + "&theme=" + $("#" + dropId).text();
-        $.ajax({
-            type: "POST",
-            url: "/NewKeywords/MoveGroup" + queryString,
-            //data: JSON.stringify(dataString),
-            //contentType: "application/json; charset=utf-8",
-            datatype: "html",
-            success: function (data) {
-                var dropTrendId = dropId.substring(11);
-                var dropThemeId = document.getElementById("theme" + dropTrendId);
-                var newLi = document.createElement('li');
-                newLi.innerHTML = '<a id="' + dragId + '" draggable="true" ondragstart="drag(event)" ondrop="dropInGroups(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#">' + document.getElementById(dragId).innerHTML + '</a>';
-                document.getElementById(dragId).parentElement.remove();
-                dropThemeId.firstElementChild.appendChild(newLi);
-                console.log(newLi);
-            },
-            error: function () {
-                alert("Content load failed.");
-            }
-        });
     }
-    document.getElementById(ev.target.id).parentElement.classList.remove("drop-ok");
 }
 function dropInGroups(ev, target) {
-    console.log(1)
+    console.log(1);
     var dropId = ev.target.id;
     var dragId = ev.dataTransfer.getData("text");
     var dropTrendId = dropId.substring(11);
-    console.log(dragId)
-    if (dragId.startsWith("newKeywordAnchor") || dragId.startsWith("stopListAnchor")) {
-        console.log(2)
+    console.log(dragId);
+    if (dragId.startsWith("newPhraseAnchor") || dragId.startsWith("stopListAnchor")) {
+        console.log(2);
         ev.preventDefault();
-        var queryString = "?id=" + dropTrendId + "&newKeyword=" + $("#" + dragId).text();
-        console.log(queryString)
+        var queryString = "?groupID=" + $("#" + dropId).attr("data-id") + "&newPhraseID=" + $("#" + dragId).attr("data-id");
+        console.log(queryString);
         $.ajax({
             type: "POST",
-            url: "/NewKeywords/MoveNewKeyword" + queryString,
+            url: "/NewPhrases/MoveToGroup" + queryString,
             //data: JSON.stringify(dataString),
             //contentType: "application/json; charset=utf-8",
             datatype: "html",
@@ -150,52 +116,49 @@ function dropInStopList(ev, target) {
     console.log(1);
     var dropId = ev.target.id;
     var dragId = ev.dataTransfer.getData("text");
-    if (dragId.startsWith("newKeywordAnchor")) {
+    if (dragId.startsWith("newPhraseAnchor")) {
         console.log(2);
         ev.preventDefault();
-        var queryString = "?stopList=" + $("#" + dragId).text();
+        var ID = $("#" + dragId).attr("data-id");
         $.ajax({
             type: "POST",
-            url: "/NewKeywords/AddStopList" + queryString,
+            url: "/NewPhrases/MoveToStopList" + "?newPhraseID=" + ID,
             //data: JSON.stringify(dataString),
             //contentType: "application/json; charset=utf-8",
             datatype: "html",
             success: function (data) {
-                var dragDBId = dragId.substring(16);
                 var newLi = document.createElement('li');
-                newLi.innerHTML = '<a id="' + dragId + '" draggable="true" ondragstart="drag(event)" ondrop="dropInStopList(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#">' + document.getElementById(dragId).innerHTML + '</a>';
+                newLi.innerHTML = '<a id=stopListAnchor' + ID + ' data-id="' + ID + '" draggable="true" ondragstart="drag(event)" ondrop="dropInStopList(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#">' + document.getElementById(dragId).innerHTML + '</a>';
                 document.getElementById(dragId).parentElement.remove();
                 document.getElementById("stopListUl").appendChild(newLi);
                 console.log(newLi);
-            },
-            error: function () {
+            },          error: function () {
                 alert("Content load failed.");
             }
         });
     }
     document.getElementById("stopListUl").classList.remove("drop-ok");
 }
-function dropInNewKeywords(ev, target) {
+function dropInNewPhrases(ev, target) {
     console.log(1);
     var dropId = ev.target.id;
     var dragId = ev.dataTransfer.getData("text");
-    console.log(dragId)
+    console.log(dragId);
     if (dragId.startsWith("stopListAnchor")) {
         console.log(2);
         ev.preventDefault();
-        var queryString = "?newKeyword=" + $("#" + dragId).text();
+        var ID = $("#" + dragId).attr("data-id");
         $.ajax({
             type: "POST",
-            url: "/NewKeywords/AddNewKeyword" + queryString,
+            url: "/NewPhrases/MoveToNewPhrases" + "?newPhraseID=" + ID,
             //data: JSON.stringify(dataString),
             //contentType: "application/json; charset=utf-8",
             datatype: "html",
             success: function (data) {
-                var dragDBId = dragId.substring(14);
                 var newLi = document.createElement('li');
-                newLi.innerHTML = '<a id="' + dragId + '" draggable="true" ondragstart="drag(event)" ondrop="dropInNewKeywords(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#">' + document.getElementById(dragId).innerHTML + '</a>';
+                newLi.innerHTML = '<a id=newPhraseAnchor' + ID + ' data-id="' + ID + '" draggable="true" ondragstart="drag(event)" ondrop="dropInNewPhrases(event, this)" ondragover="allowDrop(event)" data-toggle="tab" href="#">' + document.getElementById(dragId).innerHTML + '</a>';
                 document.getElementById(dragId).parentElement.remove();
-                document.getElementById("newKeywordsUl").appendChild(newLi);
+                document.getElementById("newPhrasesUl").appendChild(newLi);
                 console.log(newLi);
             },
             error: function () {
@@ -203,5 +166,5 @@ function dropInNewKeywords(ev, target) {
             }
         });
     }
-    document.getElementById("newKeywordsUl").classList.remove("drop-ok");
+    document.getElementById("newPhrasesUl").classList.remove("drop-ok");
 }

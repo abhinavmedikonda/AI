@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ActAI.Models
 {
-    public class NewKeywordsVM
+    public class NewPhrasesVM
     {
         public List<Organisation> Organisations { get; set; }
 
@@ -14,10 +14,10 @@ namespace ActAI.Models
 
         public List<Theme> Themes { get; set; }
 
-        public TrendAnalysisTheme trendAnalysisTheme { get; set; }
+        //public TrendAnalysisTheme trendAnalysisTheme { get; set; }
 
-        public List<TrendAnalysisNewKeywordsList> NewKeywords { get; set; }
+        public List<NewPhrase> NewPhrases { get; set; }
 
-        public List<TrendAnalysisStopList> StopLists { get; set; }
+        public List<NewPhrase> StopLists { get; set; }
     }
 }
