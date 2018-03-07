@@ -6,3 +6,12 @@ C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Models\obj\Debug\ActAI.Models.dll
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Models\obj\Debug\ActAI.Models.pdb
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Models\bin\Debug\Dapper.dll
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.Models\bin\Debug\Dapper.xml
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\bin\Debug\ActAI.Models.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\bin\Debug\ActAI.Models.pdb
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\bin\Debug\Dapper.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\bin\Debug\Dapper.xml
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\obj\Debug\ActAI.Models.csprojResolveAssemblyReference.cache
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\obj\Debug\ActAI.Models.csproj.CoreCompileInputs.cache
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\obj\Debug\ActAI.Models.csproj.CopyComplete
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\obj\Debug\ActAI.Models.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.Models\obj\Debug\ActAI.Models.pdb

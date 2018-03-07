@@ -220,3 +220,14 @@ C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.DataRepository\obj\Debug\ActAI.Da
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.csproj.CoreCompileInputs.cache
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.dll
 C:\Users\v-abmedi\source\repos\ActAIBeta\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.pdb
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\ActAI.DataRepository.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\ActAI.DataRepository.pdb
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\ActAI.Models.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\Dapper.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\ActAI.Models.pdb
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\bin\Debug\Dapper.xml
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.csprojResolveAssemblyReference.cache
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.csproj.CoreCompileInputs.cache
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.csproj.CopyComplete
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.dll
+C:\Users\v-abmedi\source\repos\AI\ActAI.DataRepository\obj\Debug\ActAI.DataRepository.pdb
